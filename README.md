@@ -4,8 +4,8 @@ predmachlearn
 Repository for Coursera MOOC Practical Machine Learning
 
 
-Note: this is the master branche with the source files.
+Note: this is the master branche with the source file, the project file and the markdown file.
 
-The  compiled HTML file with analysis: https://github.com/PiAir/predmachlearn/tree/gh-pages
+The  compiled HTML file with the analysis: https://github.com/PiAir/predmachlearn/tree/gh-pages
 
-View the HTML page with the online using: https://piair.github.io/predmachlearn/project.html
+You can view the HTML page with the analysis online using: https://piair.github.io/predmachlearn/project.html
