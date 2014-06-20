@@ -192,7 +192,9 @@ The goal of this project is to predict the manner in which they did the exercise
 
 <h2>Data Preprocessing</h2>
 
-<pre><code class="r"># load libraries
+<pre><code class="r">set.seed(12345)
+
+# load libraries
 library(caret)
 </code></pre>
 
@@ -285,12 +287,12 @@ We do have however a reduced number of rows.</p>
 ## Resampling results across tuning parameters:
 ## 
 ##   cp    Accuracy  Kappa  Accuracy SD  Kappa SD
-##   0.04  0.5       0.4    0.09         0.1     
-##   0.04  0.5       0.3    0.09         0.1     
-##   0.1   0.3       0.05   0.04         0.06    
+##   0.03  0.6       0.4    0.04         0.06    
+##   0.06  0.4       0.2    0.05         0.09    
+##   0.1   0.3       0.06   0.05         0.06    
 ## 
 ## Accuracy was used to select the optimal model using  the largest value.
-## The final value used for the model was cp = 0.04.
+## The final value used for the model was cp = 0.03.
 </code></pre>
 
 <pre><code class="r">
@@ -298,11 +300,11 @@ results &lt;- modFit$results
 round(max(results$Accuracy), 4) * 100
 </code></pre>
 
-<pre><code>## [1] 52.71
+<pre><code>## [1] 55.11
 </code></pre>
 
 <p>Note that running the train() function can take some time!
-The accuracy of the model is low: 52.71 %</p>
+The accuracy of the model is low: 55.11 %</p>
 
 <p>A second attempt to create a model is done by using Random forests:</p>
 
@@ -328,14 +330,14 @@ modFit &lt;- train(pml.sub.training$classe ~ ., data = pml.sub.training, method 
 ## No pre-processing
 ## Resampling: Cross-Validated (4 fold) 
 ## 
-## Summary of sample sizes: 2946, 2945, 2945, 2945 
+## Summary of sample sizes: 2944, 2945, 2946, 2946 
 ## 
 ## Resampling results across tuning parameters:
 ## 
 ##   mtry  Accuracy  Kappa  Accuracy SD  Kappa SD
-##   2     1         1      0.006        0.008   
-##   30    1         1      0.005        0.007   
-##   60    1         1      0.004        0.006   
+##   2     1         1      0.004        0.005   
+##   30    1         1      0.003        0.004   
+##   60    1         1      0.007        0.009   
 ## 
 ## Accuracy was used to select the optimal model using  the largest value.
 ## The final value used for the model was mtry = 28.
@@ -346,10 +348,10 @@ results &lt;- modFit$results
 round(max(results$Accuracy), 4) * 100
 </code></pre>
 
-<pre><code>## [1] 98.98
+<pre><code>## [1] 98.8
 </code></pre>
 
-<p>This second attempt provides us with a model that has a much higher accuracy: : 98.98 %</p>
+<p>This second attempt provides us with a model that has a much higher accuracy: : 98.8 %</p>
 
 <h2>Cross-validation</h2>
 
@@ -362,11 +364,11 @@ table(pred, pml.test.training$classe)
 
 <pre><code>##     
 ## pred    A    B    C    D    E
-##    A 4461    3    0    0    0
-##    B    3 3016   32    0    1
-##    C    0   18 2705   36    3
-##    D    0    0    0 2536   37
-##    E    0    0    0    0 2844
+##    A 4464   31    0    0   12
+##    B    0 2991   17    0    1
+##    C    0   15 2713   26    0
+##    D    0    0    7 2541   19
+##    E    0    0    0    5 2853
 </code></pre>
 
 <p>As expected the predictions are not correct in all cases.
@@ -394,11 +396,11 @@ cfM
 ## 
 ##           Reference
 ## Prediction    A    B    C    D    E
-##          A 4461    3    0    0    0
-##          B    3 3016   32    0    1
-##          C    0   18 2705   36    3
-##          D    0    0    0 2536   37
-##          E    0    0    0    0 2844
+##          A 4464   31    0    0   12
+##          B    0 2991   17    0    1
+##          C    0   15 2713   26    0
+##          D    0    0    7 2541   19
+##          E    0    0    0    5 2853
 ## 
 ## Overall Statistics
 ##                                        
@@ -413,19 +415,47 @@ cfM
 ## Statistics by Class:
 ## 
 ##                      Class: A Class: B Class: C Class: D Class: E
-## Sensitivity             0.999    0.993    0.988    0.986    0.986
-## Specificity             1.000    0.997    0.996    0.997    1.000
-## Pos Pred Value          0.999    0.988    0.979    0.986    1.000
-## Neg Pred Value          1.000    0.998    0.998    0.997    0.997
+## Sensitivity             1.000    0.985    0.991    0.988    0.989
+## Specificity             0.996    0.999    0.997    0.998    1.000
+## Pos Pred Value          0.990    0.994    0.985    0.990    0.998
+## Neg Pred Value          1.000    0.996    0.998    0.998    0.998
 ## Prevalence              0.284    0.194    0.174    0.164    0.184
-## Detection Rate          0.284    0.192    0.172    0.162    0.181
-## Detection Prevalence    0.284    0.194    0.176    0.164    0.181
-## Balanced Accuracy       1.000    0.995    0.992    0.992    0.993
+## Detection Rate          0.284    0.191    0.173    0.162    0.182
+## Detection Prevalence    0.287    0.192    0.175    0.164    0.182
+## Balanced Accuracy       0.998    0.992    0.994    0.993    0.994
 </code></pre>
 
 <p>The expected out of sample error is: 0.8474 % </p>
 
 <p>Note: The confusionMatrix function from the Caret package does provide all the information that we calculated &#39;by hand&#39; in the first part of the Cross-validation. It shows that both methods provide the same answer.</p>
+
+<h2>20 case test set predictions</h2>
+
+<p>Although not part of the first part of the assignment, this is the script that creates the 20 .txt files needed to answer the second part of the assignment:</p>
+
+<pre><code class="r">pred2 &lt;- predict(modFit, pml.testing)
+pml.testing.2 &lt;- pml.testing
+pml.testing.2$classe &lt;- pred2
+
+pml_write_files = function(x) {
+    n = length(x)
+    for (i in 1:n) {
+        filename = paste0(&quot;problem_id_&quot;, i, &quot;.txt&quot;)
+        write.table(x[i], file = filename, quote = FALSE, row.names = FALSE, 
+            col.names = FALSE)
+    }
+}
+
+
+answers &lt;- pml.testing.2$classe
+
+pml_write_files(answers)
+answers
+</code></pre>
+
+<pre><code>##  [1] B A B A A E D B A A B C B A E E A B B B
+## Levels: A B C D E
+</code></pre>
 
 </body>
 
